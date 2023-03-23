@@ -9,7 +9,6 @@ const routes = [
         name: "todos-page",
         component: () => import("pages/ToDosPage"),
         props: (route) => ({
-          tutuutut: route,
           section: route.params.section || "all",
         }),
         // children: [{ path: "", component: () => import("pages/IndexPage.vue") }],

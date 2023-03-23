@@ -11,14 +11,16 @@ const useTodos = () => {
 
   const { sections } = store.state.todos;
 
-  const tabInRoute = $route.params?.section;
-  const tabHandle = sections.includes(tabInRoute)
-    ? tabInRoute
+  const { section } = $route.params;
+  const tabHandle = sections.includes(section)
+    ? section
     : sections.find((s) => s.name === "all");
 
   const currentTab = ref(tabHandle);
-  const dialogNewTodo = ref(false);
-  const newTodo = ref({
+  const dialogFormTodo = ref(false);
+
+  const actionForm = ref("");
+  const todoForm = ref({
     title: "",
     text: "",
     createdAt: "mm/dd/yy",
@@ -26,20 +28,42 @@ const useTodos = () => {
     isCompleted: false,
   });
 
-  const cleanNewTodo = () => {
-    newTodo.value = {
+  const editTodo = (task) => {
+    dialogFormTodo.value = true;
+    actionForm.value = "edit";
+    todoForm.value = { ...task };
+  };
+
+  const closeDialogForm = () => {
+    actionForm.value = "";
+    todoForm.value = {
       title: "",
       text: "",
       createdAt: "mm/dd/yy",
       isDeleted: false,
       isCompleted: false,
     };
+    dialogFormTodo.value = false;
   };
 
-  const submitNewTodo = () => {
-    store.commit("todos/addNewTodo", newTodo.value);
-    dialogNewTodo.value = false;
-    cleanNewTodo();
+  const createNewTodo = () => {
+    actionForm.value = "create";
+    dialogFormTodo.value = true;
+  };
+
+  const submitDialogForm = (action, todo) => {
+    switch (action) {
+      case "create":
+        store.commit("todos/addNewTodo", {
+          id: store.getters["todos/lastTodoId"] + 1,
+          ...todo,
+        });
+        break;
+      case "edit":
+        store.commit("todos/editTodo", { ...todo });
+        break;
+    }
+    return;
   };
 
   const toggleTodo = (id) => {
@@ -70,8 +94,9 @@ const useTodos = () => {
   return {
     // State
     currentTab,
-    dialogNewTodo,
-    newTodo,
+    dialogFormTodo,
+    actionForm,
+    todoForm,
 
     // Computed
     currentSectionCapitalized: computed(() => {
@@ -79,6 +104,11 @@ const useTodos = () => {
         currentTab.value.name.charAt(0).toUpperCase() +
         currentTab.value.name.slice(1)
       );
+    }),
+    titleActionForm: computed(() => {
+      return actionForm.value === "create"
+        ? "Creating a new todo..."
+        : "Editing a todo...";
     }),
     all: computed(() => store.getters["todos/allTodos"]),
     getTodosByTab: computed(() =>
@@ -89,8 +119,10 @@ const useTodos = () => {
     alert,
     toggleDeleteTodo,
     toggleTodo,
-    submitNewTodo,
-    cleanNewTodo,
+    submitDialogForm,
+    createNewTodo,
+    editTodo,
+    closeDialogForm,
 
     //Vuex
     sections,

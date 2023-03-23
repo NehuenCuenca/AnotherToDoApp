@@ -2,7 +2,7 @@ export default function () {
   return {
     todos: [
       {
-        id: "1",
+        id: 1,
         title: "first todo",
         text: "Nostrud anim enim non laboris laboris ea. Et ipsum fugiat Lorem est aliquip. Voluptate id Lorem adipisicing do officia quis veniam in ullamco veniam. Anim non enim proident laboris elit ea dolore. Nulla culpa in do cupidatat aliqua sunt nulla commodo sit do occaecat minim sint nisi. Consequat aliqua adipisicing dolore incididunt dolor laboris amet.",
         createdAt: "mm/dd/yy",
@@ -10,7 +10,7 @@ export default function () {
         isCompleted: false,
       },
       {
-        id: "2",
+        id: 2,
         title: "second todo",
         text: "Nostrud anim enim non laboris laboris ea. Et ipsum fugiat Lorem est aliquip. Voluptate id Lorem adipisicing do officia quis veniam in ullamco veniam. Anim non enim proident laboris elit ea dolore. Nulla culpa in do cupidatat aliqua sunt nulla commodo sit do occaecat minim sint nisi. Consequat aliqua adipisicing dolore incididunt dolor laboris amet.",
         createdAt: "mm/dd/yy",

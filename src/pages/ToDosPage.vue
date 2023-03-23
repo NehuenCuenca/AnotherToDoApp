@@ -1,29 +1,10 @@
 <template>
     <div class="q-pa-md column ">
         <div class="row justify-center">
-            <q-btn class="col-1" label="New todo" color="primary" @click="dialogNewTodo = true" />
+            <q-btn class="col-1" label="New todo" color="primary" @click="createNewTodo" />
         </div>
 
-        <q-dialog v-model="dialogNewTodo">
-            <q-layout view="Lhh lpR fff" container class="bg-white">
-                <q-header class="bg-primary">
-                    <q-toolbar>
-                        <q-toolbar-title>Creating a new todo...</q-toolbar-title>
-                        <q-btn flat v-close-popup round dense icon="las la-times-circle" @click="cleanNewTodo" />
-                    </q-toolbar>
-                </q-header>
-                <q-page-container>
-                    <q-page padding>
-                        <form @submit.prevent="submitNewTodo" class="column wrap q-gutter-md items-center">
-                            <q-input type="text" placeholder="Title" v-model="newTodo.title" required filled />
-                            <q-input type="textarea" v-model="newTodo.text" cols="50" rows="10"
-                                placeholder="Write a description for the todo" required filled />
-                            <q-btn type="submit" label="Submit" color="primary" />
-                        </form>
-                    </q-page>
-                </q-page-container>
-            </q-layout>
-        </q-dialog>
+        <todoForm :action="actionForm" :todo="todoForm" v-model="dialogFormTodo" @closeDialog="closeDialogForm" />
 
         <div class="q-mt-md row justify-center">
             <q-btn-group spread class="col-8">
@@ -55,6 +36,8 @@
                                         @click="toggleTodo(todo.id)" />
                                     <q-btn class="gt-xs" size="12px" flat dense round icon="las la-trash"
                                         @click="toggleDeleteTodo(todo)" />
+                                    <q-btn class="gt-xs" size="12px" flat dense round icon="las la-edit"
+                                        @click="editTodo(todo)" />
                                 </template>
                                 <q-btn class="gt-xs" size="12px" flat dense round icon="las la-sync"
                                     @click="toggleDeleteTodo(todo)" v-if="todo.isDeleted" />
@@ -74,38 +57,46 @@
 
 <script>
 import useTodos from '../composables/useTodos'
+import todoForm from '../components/todoForm.vue'
 
 export default {
     name: 'todos-page',
+    components: {
+        todoForm
+    },
     setup() {
         const {
-            dialogNewTodo,
+            dialogFormTodo,
             currentTab,
             all,
             getTodosByTab,
             alert,
             toggleDeleteTodo,
             toggleTodo,
-            submitNewTodo,
-            cleanNewTodo,
-            newTodo,
             sections,
-            currentSectionCapitalized
+            currentSectionCapitalized,
+            actionForm,
+            todoForm,
+            createNewTodo,
+            editTodo,
+            closeDialogForm
         } = useTodos();
 
         return {
-            dialogNewTodo,
+            dialogFormTodo,
+            closeDialogForm,
             currentTab,
             all,
             getTodosByTab,
             alert,
             toggleDeleteTodo,
             toggleTodo,
-            submitNewTodo,
-            cleanNewTodo,
-            newTodo,
             sections,
-            currentSectionCapitalized
+            currentSectionCapitalized,
+            actionForm,
+            todoForm,
+            createNewTodo,
+            editTodo
         }
     }
 }
