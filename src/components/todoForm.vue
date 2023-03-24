@@ -10,11 +10,14 @@
 
             <q-page-container>
                 <q-page padding>
-                    <form @submit.prevent="localSubmit" class="column wrap q-gutter-md items-center">
-                        <q-input type="text" v-model="localTodo.title" placeholder="Title" required filled />
-                        <q-input type="textarea" v-model="localTodo.text" cols="50" rows="10" required filled />
+                    <q-form @submit.prevent="localSubmit" class="column wrap q-gutter-md items-center">
+                        <q-input type="text" v-model="localTodo.title" placeholder="Write an awesome title" required filled
+                            no-error-icon lazy-rules :rules="[fiveCharactersMinimum]" />
+                        <q-input type="textarea" v-model="localTodo.text" cols="50" rows="10"
+                            placeholder="Write an awesome to do" required filled no-error-icon lazy-rules
+                            :rules="[fiveCharactersMinimum]" />
                         <q-btn type="submit" label="Submit" color="primary" />
-                    </form>
+                    </q-form>
                 </q-page>
             </q-page-container>
         </q-layout>
@@ -22,6 +25,7 @@
 </template>
 
 <script >
+import { useQuasar } from "quasar";
 import { computed, toRef } from 'vue'
 import useTodos from '../composables/useTodos'
 
@@ -56,7 +60,10 @@ export default {
             submitDialogForm,
         } = useTodos();
 
-        const titleDialog = computed(() => (props.action === 'create' ? 'Creating a new todo' : 'Editing a todo'));
+
+        const $q = useQuasar();
+
+        const titleDialog = computed(() => (props.action === 'create' ? '💭 Creating a new todo...' : '🔨 Editing a todo...'));
 
         const localTodo = toRef(props, 'todo')
 
@@ -67,12 +74,16 @@ export default {
         }
 
 
+        const fiveCharactersMinimum = val => (val && val.length >= 5) || 'Please use maximum 5 characters'
+
+
         return {
             titleDialog,
             submitDialogForm,
             closeDialog,
             localTodo,
             localSubmit,
+            fiveCharactersMinimum
         }
     }
 }

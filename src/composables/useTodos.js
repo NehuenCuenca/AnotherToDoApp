@@ -23,7 +23,7 @@ const useTodos = () => {
   const todoForm = ref({
     title: "",
     text: "",
-    createdAt: "mm/dd/yy",
+    createdAt: null,
     isDeleted: false,
     isCompleted: false,
   });
@@ -39,7 +39,7 @@ const useTodos = () => {
     todoForm.value = {
       title: "",
       text: "",
-      createdAt: "mm/dd/yy",
+      createdAt: null,
       isDeleted: false,
       isCompleted: false,
     };
@@ -55,8 +55,9 @@ const useTodos = () => {
     switch (action) {
       case "create":
         store.commit("todos/addNewTodo", {
-          id: store.getters["todos/lastTodoId"] + 1,
           ...todo,
+          id: store.getters["todos/lastTodoId"] + 1,
+          createdAt: Date.now(),
         });
         break;
       case "edit":
@@ -70,15 +71,18 @@ const useTodos = () => {
     store.commit("todos/toggleTodo", id);
   };
   const alert = ({ title, text, createdAt }) => {
+    const dateFormated = new Date(createdAt);
+    const date = `${dateFormated.getDate()}/${dateFormated.getMonth()}/${dateFormated.getFullYear()}`;
+    const time = `${dateFormated.getHours()}:${dateFormated.getMinutes()}:${dateFormated.getSeconds()}`;
     $q.dialog({
-      title: `${title} (${createdAt})`,
+      title: `${title} (${date} ${time})`,
       message: `${text}`,
     });
   };
   const toggleDeleteTodo = ({ title, text, id, isDeleted }) => {
-    const titleDialog = !isDeleted
-      ? "Are you sure to delete this todo?"
-      : "Are you sure to recover this todo?";
+    const titleDialog = isDeleted
+      ? `Do you want to recover the todo: '${title}'?`
+      : `Do you want to delete the todo: '${title}'?`;
 
     $q.dialog({
       title: titleDialog,
@@ -104,11 +108,6 @@ const useTodos = () => {
         currentTab.value.name.charAt(0).toUpperCase() +
         currentTab.value.name.slice(1)
       );
-    }),
-    titleActionForm: computed(() => {
-      return actionForm.value === "create"
-        ? "Creating a new todo..."
-        : "Editing a todo...";
     }),
     all: computed(() => store.getters["todos/allTodos"]),
     getTodosByTab: computed(() =>

@@ -23,23 +23,23 @@
                     <q-item v-for="todo in getTodosByTab" :key="todo.id" clickable v-ripple>
                         <q-item-section>
                             <q-item-label :class="(todo.isCompleted) ? 'completed' : ''">{{ todo.title }}</q-item-label>
-                            <q-item-label caption>{{ todo.createdAt }}</q-item-label>
+                            <q-item-label caption>{{ Date(todo.createdAt) }}</q-item-label>
                         </q-item-section>
                         <q-item-section top side>
                             <div class="text-grey-8 q-gutter-xs">
                                 <template v-if="!todo.isDeleted">
-                                    <q-btn class="gt-xs" size="12px" flat dense round icon="las la-eye"
+                                    <q-btn class="gt-xs" size="14px" flat dense round icon="las la-eye"
                                         @click="alert(todo)" />
 
-                                    <q-btn class="gt-xs" size="12px" flat dense round
+                                    <q-btn class="gt-xs" size="14px" flat dense round
                                         :icon="(todo.isCompleted) ? 'las la-undo' : 'las la-check'"
                                         @click="toggleTodo(todo.id)" />
-                                    <q-btn class="gt-xs" size="12px" flat dense round icon="las la-trash"
-                                        @click="toggleDeleteTodo(todo)" />
-                                    <q-btn class="gt-xs" size="12px" flat dense round icon="las la-edit"
+                                    <q-btn class="gt-xs" size="14px" flat dense round icon="las la-edit"
                                         @click="editTodo(todo)" />
+                                    <q-btn class="gt-xs" size="14px" flat dense round icon="las la-trash"
+                                        @click="toggleDeleteTodo(todo)" />
                                 </template>
-                                <q-btn class="gt-xs" size="12px" flat dense round icon="las la-sync"
+                                <q-btn class="gt-xs" size="14px" flat dense round icon="las la-sync"
                                     @click="toggleDeleteTodo(todo)" v-if="todo.isDeleted" />
                             </div>
                         </q-item-section>
@@ -79,7 +79,7 @@ export default {
             todoForm,
             createNewTodo,
             editTodo,
-            closeDialogForm
+            closeDialogForm,
         } = useTodos();
 
         return {
@@ -96,7 +96,7 @@ export default {
             actionForm,
             todoForm,
             createNewTodo,
-            editTodo
+            editTodo,
         }
     }
 }
