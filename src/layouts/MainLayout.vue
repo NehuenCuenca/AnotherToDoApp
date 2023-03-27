@@ -5,18 +5,19 @@
         <q-btn flat dense round icon="las la-bars" aria-label="Menu" @click="toggleDrawer" />
 
         <q-toolbar-title>
-          Quasar App
+          AnotherToDoApp
         </q-toolbar-title>
 
-        <!-- TODO: <div>Quasar v{{ $q.version }}</div> -->
+        <q-btn flat round dense icon="las la-adjust" @click="toggleTheme" />
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="showDrawer" show-if-above bordered>
       <q-list>
         <q-item-label header>
-          Essential Links
+          Menu links
         </q-item-label>
+        <q-separator />
 
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>
@@ -30,9 +31,10 @@
 
 <script>
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { linksList } from '../router/links-list'
+import useUserSettings from 'src/composables/useUserSettings'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -45,12 +47,16 @@ export default defineComponent({
 
     const showDrawer = ref(false)
 
+    const { toggleTheme } = useUserSettings()
+
+
     return {
       showDrawer,
       linksList,
       toggleDrawer: () => {
         showDrawer.value = !showDrawer.value
-      }
+      },
+      toggleTheme
     }
   }
 })

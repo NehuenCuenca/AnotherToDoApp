@@ -1,7 +1,7 @@
 export function someGetter(/* state */) {}
 
 export function lastTodoId(state) {
-  return state.todos[state.todos.length - 1].id;
+  return state.todos[state.todos.length - 1]?.id;
 }
 
 export function allTodos(state) {

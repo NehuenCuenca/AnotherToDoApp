@@ -1,4 +1,4 @@
-import { useQuasar } from "quasar";
+import { useQuasar, Dark } from "quasar";
 import { useRoute } from "vue-router";
 
 import { computed, ref } from "vue";
@@ -64,35 +64,47 @@ const useTodos = () => {
         store.commit("todos/editTodo", { ...todo });
         break;
     }
+    storeStateTodos();
     return;
   };
 
   const toggleTodo = (id) => {
     store.commit("todos/toggleTodo", id);
+    storeStateTodos();
   };
+
   const alert = ({ title, text, createdAt }) => {
     const dateFormated = new Date(createdAt);
     const date = `${dateFormated.getDate()}/${dateFormated.getMonth()}/${dateFormated.getFullYear()}`;
     const time = `${dateFormated.getHours()}:${dateFormated.getMinutes()}:${dateFormated.getSeconds()}`;
     $q.dialog({
+      dark: Dark.isActive,
       title: `${title} (${date} ${time})`,
       message: `${text}`,
     });
   };
+
   const toggleDeleteTodo = ({ title, text, id, isDeleted }) => {
     const titleDialog = isDeleted
       ? `Do you want to recover the todo: '${title}'?`
       : `Do you want to delete the todo: '${title}'?`;
 
     $q.dialog({
+      dark: Dark.isActive,
       title: titleDialog,
       message: `${title} \n ${text}`,
       cancel: true,
       persistent: true,
     }).onOk(() => {
       store.commit("todos/toggleDeleteTodo", id);
+      storeStateTodos();
       return;
     });
+  };
+
+  const storeStateTodos = () => {
+    // console.log(store.state.todos.todos);
+    localStorage.setItem("todos", JSON.stringify(store.state.todos.todos));
   };
 
   return {
@@ -122,6 +134,7 @@ const useTodos = () => {
     createNewTodo,
     editTodo,
     closeDialogForm,
+    storeStateTodos,
 
     //Vuex
     sections,
