@@ -1,6 +1,6 @@
 # AnotherToDoAppProject (anothertodoapp)
 
-This is an another todo app project
+This is an another todo app project. Deploy here: https://anothertodoapp-nc.netlify.app/#/
 
 ## Install the dependencies
 ```bash
