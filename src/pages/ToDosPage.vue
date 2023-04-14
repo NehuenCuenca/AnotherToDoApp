@@ -23,7 +23,7 @@
                     <q-item v-for="todo in getTodosByTab" :key="todo.id" clickable v-ripple>
                         <q-item-section>
                             <q-item-label :class="(todo.isCompleted) ? 'completed' : ''">{{ todo.title }}</q-item-label>
-                            <q-item-label caption>{{ Date(todo.createdAt) }}</q-item-label>
+                            <q-item-label caption>{{ new Date(todo.createdAt) }}</q-item-label>
                         </q-item-section>
                         <q-item-section top side>
                             <div class="text-grey-8 q-gutter-xs">
